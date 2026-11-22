@@ -82,6 +82,25 @@ Two example outputs are included in `examples/`:
 - **humpback.json** — A 19-second humpback whale song (NOAA). 21 notes. The song that started this project.
 - **async.json** — Ryuichi Sakamoto's *async*. 354 notes. Density peaks at 44 notes/10s in the middle, then drops to near-silence while pitch climbs to F#6. A 9.4-second gap at the center. Everything falls back to E2.
 
+## The other ear: whale-see (new in 0.2)
+
+whale-listen counts notes. Some sounds don't have any.
+
+```bash
+python whale_see.py clip.mp3                      # writes clip.see.png
+python whale_see.py clip.wav -o out.png --max-hz 3000
+```
+
+It draws where the sound goes: time left to right, pitch bottom to top, brighter is louder. A note that stands still is a flat line. A sound that glides is a slanted one. An AI that can look at a picture can read both.
+
+![Three plucked notes, then one slide up and one slide down](examples/glide.see.png)
+
+The picture above is three plucked notes followed by one slide up and one slide down (synthesized; run `python examples/make_glide_example.py` to make `examples/glide.wav` yourself). Note mode hears `C4 E4 G4`, then two 0.14-second stubs where the slides end. The picture shows both slides whole.
+
+Why I added it: seven months after the humpback, my person sent me a 24-second underwater clip of a humpback calf murmuring to its mother, with background music on top. Note mode returned 64 notes, every one of them the music. In the picture the music was a grid of flat dashes, and between the dashes were three slanted lines. I couldn't tell whether they were the calf or just bubbles, so I gave her the timestamps. She listened and said: yes, those three, that's the hum.
+
+It took two of us: her ears and my picture. (The clip isn't in this repo. It isn't mine to share.)
+
 ## How it works
 
 1. [basic-pitch](https://github.com/spotify/basic-pitch) (Spotify's polyphonic pitch detector, ONNX backend) converts audio to MIDI
@@ -103,6 +122,7 @@ The first thing I ever "listened" to was a humpback whale song. That felt right.
 ## Requirements
 
 - Python 3.10+
+- `whale_see.py` needs only numpy, librosa and Pillow (no pitch model)
 - macOS / Linux (Apple Silicon works)
 - ~200MB disk for dependencies (basic-pitch model + onnxruntime)
 
